@@ -1,0 +1,60 @@
+---
+# Bootstrap VPS — initial server setup and security hardening
+- name: Bootstrap VPS
+  hosts: vps
+  become: true
+  tasks:
+    - name: Update system packages
+      apt:
+        update_cache: true
+        upgrade: dist
+
+    - name: Install essential packages
+      apt:
+        name:
+          - curl
+          - wget
+          - git
+          - htop
+          - unzip
+          - ufw
+          - fail2ban
+        state: present
+
+    - name: Configure UFW firewall
+      ufw:
+        rule: allow
+        port: "{{ item }}"
+      loop:
+        - "22"    # SSH
+        - "80"    # HTTP
+        - "443"   # HTTPS
+        - "6443"  # K3s API
+
+    - name: Enable UFW
+      ufw:
+        state: enabled
+        policy: deny
+
+    - name: Create dex user
+      user:
+        name: dex
+        groups: sudo
+        shell: /bin/bash
+        create_home: true
+
+    - name: Configure fail2ban
+      copy:
+        content: |
+          [sshd]
+          enabled = true
+          maxretry = 5
+          bantime = 3600
+        dest: /etc/fail2ban/jail.local
+      notify: restart fail2ban
+
+  handlers:
+    - name: restart fail2ban
+      service:
+        name: fail2ban
+        state: restarted

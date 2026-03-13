@@ -1,0 +1,64 @@
+[project]
+name = "infradex"
+version = "0.1.0"
+description = "Infrastructure-as-Code CLI for TheDataEngineX platform"
+authors = [
+    {name = "Jay", email = "jayapal.myaka99@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "MIT"}
+keywords = ["infrastructure", "kubernetes", "terraform", "devops", "dataenginex"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: System :: Systems Administration",
+]
+
+dependencies = [
+    "click>=8.1",
+    "rich>=13.0",
+    "pydantic>=2.0",
+    "pyyaml>=6.0",
+    "fabric>=3.2",
+    "python-dotenv>=1.0",
+]
+
+[project.scripts]
+infradex = "infradex.cli:main"
+
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/infradex"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "ruff>=0.15.0",
+    "mypy>=1.19.0",
+    "poethepoet>=0.40.0",
+]
+
+[tool.uv]
+python-preference = "only-managed"
+default-groups = ["dev"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "C90"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

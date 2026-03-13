@@ -1,0 +1,15 @@
+apiVersion: v2
+name: dex-studio
+description: DEX Studio — Visual control plane and dashboard for the DataEngineX platform
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+maintainers:
+  - name: DataEngineX
+home: https://github.com/TheDataEngineX/infradex
+sources:
+  - https://github.com/TheDataEngineX/dex-studio
+keywords:
+  - dashboard
+  - ui
+  - control-plane

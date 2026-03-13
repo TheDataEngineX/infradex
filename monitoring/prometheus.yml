@@ -1,0 +1,42 @@
+# Prometheus Configuration
+# Scrape configs for DataEngineX platform services
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - "alerts/*.yml"
+
+scrape_configs:
+  - job_name: "dataenginex"
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+          - "datadex:8001"
+        labels:
+          service: datadex
+
+  - job_name: "careerdex"
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+          - "careerdex:8003"
+        labels:
+          service: careerdex
+
+  - job_name: "agentdex"
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+          - "agentdex:8002"
+        labels:
+          service: agentdex
+
+  - job_name: "dex-studio"
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+          - "dex-studio:8080"
+        labels:
+          service: dex-studio

@@ -1,0 +1,40 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/thedataenginex/dex-studio
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 8080
+
+containerPort: 8080
+
+env:
+  - name: DEX_ENGINE_URL
+    value: "http://datadex:8001"
+  - name: DEX_ENV
+    value: "production"
+  - name: LOG_LEVEL
+    value: "info"
+
+healthCheck:
+  path: /
+  initialDelaySeconds: 15
+  periodSeconds: 20
+  timeoutSeconds: 5
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80

@@ -1,0 +1,15 @@
+apiVersion: v2
+name: careerdex
+description: CareerDEX — Job data platform with salary prediction, skill gaps, and career health
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+maintainers:
+  - name: DataEngineX
+home: https://github.com/TheDataEngineX/infradex
+sources:
+  - https://github.com/TheDataEngineX/dex
+keywords:
+  - careers
+  - ml
+  - data-engineering

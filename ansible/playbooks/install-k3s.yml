@@ -1,0 +1,55 @@
+---
+# K3s Installation Playbook
+# Installs K3s lightweight Kubernetes on a VPS node
+#
+# Usage:
+#   ansible-playbook -i inventory/hosts.yml playbooks/install-k3s.yml
+
+- name: Install K3s on VPS
+  hosts: vps
+  become: true
+  vars:
+    k3s_version: "v1.30.4+k3s1"
+    kubeconfig_local_path: "{{ playbook_dir }}/../../kubeconfig"
+
+  tasks:
+    - name: Download K3s installer
+      ansible.builtin.get_url:
+        url: https://get.k3s.io
+        dest: /tmp/k3s-install.sh
+        mode: "0755"
+
+    - name: Install K3s server
+      ansible.builtin.shell: |
+        INSTALL_K3S_VERSION="{{ k3s_version }}" \
+        INSTALL_K3S_EXEC="server --disable traefik --write-kubeconfig-mode 644" \
+        /tmp/k3s-install.sh
+      args:
+        creates: /usr/local/bin/k3s
+      environment:
+        INSTALL_K3S_VERSION: "{{ k3s_version }}"
+
+    - name: Wait for K3s to be ready
+      ansible.builtin.command: k3s kubectl get nodes
+      register: k3s_nodes
+      until: k3s_nodes.rc == 0 and 'Ready' in k3s_nodes.stdout
+      retries: 30
+      delay: 10
+      changed_when: false
+
+    - name: Read kubeconfig from server
+      ansible.builtin.slurp:
+        src: /etc/rancher/k3s/k3s.yaml
+      register: kubeconfig_content
+
+    - name: Copy kubeconfig locally
+      ansible.builtin.copy:
+        content: "{{ kubeconfig_content.content | b64decode | regex_replace('127.0.0.1', ansible_host) }}"
+        dest: "{{ kubeconfig_local_path }}"
+        mode: "0600"
+      delegate_to: localhost
+      become: false
+
+    - name: Display cluster status
+      ansible.builtin.debug:
+        msg: "K3s installed. Kubeconfig saved to {{ kubeconfig_local_path }}"

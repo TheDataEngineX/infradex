@@ -1,0 +1,27 @@
+apiVersion: v2
+name: dex-monitoring
+description: DEX Monitoring Stack — Prometheus, Grafana, Loki, and Jaeger for observability
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+maintainers:
+  - name: DataEngineX
+home: https://github.com/TheDataEngineX/infradex
+keywords:
+  - monitoring
+  - prometheus
+  - grafana
+  - observability
+dependencies:
+  - name: kube-prometheus-stack
+    version: "~61.0"
+    repository: https://prometheus-community.github.io/helm-charts
+    condition: prometheus.enabled
+  - name: loki
+    version: "~6.0"
+    repository: https://grafana.github.io/helm-charts
+    condition: loki.enabled
+  - name: jaeger
+    version: "~3.0"
+    repository: https://jaegertracing.github.io/helm-charts
+    condition: jaeger.enabled

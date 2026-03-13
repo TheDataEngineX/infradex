@@ -1,0 +1,89 @@
+---
+# Monitoring Stack Playbook
+# Installs Prometheus, Grafana, Loki, and Jaeger via Helm
+#
+# Prerequisites:
+#   - K3s/K8s cluster running
+#   - Helm installed on control node
+#   - kubeconfig configured
+#
+# Usage:
+#   ansible-playbook -i inventory/hosts.yml playbooks/setup-monitoring.yml
+
+- name: Deploy monitoring stack
+  hosts: localhost
+  connection: local
+  vars:
+    monitoring_namespace: dex-monitoring
+    prometheus_chart_version: "61.0.0"
+    loki_chart_version: "6.0.0"
+    jaeger_chart_version: "3.0.0"
+
+  tasks:
+    - name: Create monitoring namespace
+      kubernetes.core.k8s:
+        name: "{{ monitoring_namespace }}"
+        api_version: v1
+        kind: Namespace
+        state: present
+
+    - name: Add Prometheus community Helm repo
+      kubernetes.core.helm_repository:
+        name: prometheus-community
+        repo_url: https://prometheus-community.github.io/helm-charts
+
+    - name: Add Grafana Helm repo
+      kubernetes.core.helm_repository:
+        name: grafana
+        repo_url: https://grafana.github.io/helm-charts
+
+    - name: Add Jaeger Helm repo
+      kubernetes.core.helm_repository:
+        name: jaegertracing
+        repo_url: https://jaegertracing.github.io/helm-charts
+
+    - name: Install kube-prometheus-stack
+      kubernetes.core.helm:
+        name: prometheus
+        chart_ref: prometheus-community/kube-prometheus-stack
+        chart_version: "{{ prometheus_chart_version }}"
+        release_namespace: "{{ monitoring_namespace }}"
+        create_namespace: true
+        values:
+          grafana:
+            enabled: true
+            adminPassword: "" # Set via --set or vault
+          prometheus:
+            prometheusSpec:
+              retention: 15d
+
+    - name: Install Loki
+      kubernetes.core.helm:
+        name: loki
+        chart_ref: grafana/loki
+        chart_version: "{{ loki_chart_version }}"
+        release_namespace: "{{ monitoring_namespace }}"
+        values:
+          singleBinary:
+            replicas: 1
+
+    - name: Install Jaeger
+      kubernetes.core.helm:
+        name: jaeger
+        chart_ref: jaegertracing/jaeger
+        chart_version: "{{ jaeger_chart_version }}"
+        release_namespace: "{{ monitoring_namespace }}"
+        values:
+          provisionDataStore:
+            cassandra: false
+          allInOne:
+            enabled: true
+          storage:
+            type: memory
+
+    - name: Display monitoring status
+      ansible.builtin.debug:
+        msg: >
+          Monitoring stack deployed to namespace {{ monitoring_namespace }}.
+          Grafana: kubectl port-forward svc/prometheus-grafana 3000:80 -n {{ monitoring_namespace }}
+          Jaeger:  kubectl port-forward svc/jaeger-query 16686:16686 -n {{ monitoring_namespace }}

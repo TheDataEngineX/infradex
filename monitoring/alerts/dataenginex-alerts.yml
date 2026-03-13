@@ -1,0 +1,44 @@
+# DataEngineX Prometheus Alert Rules
+# Monitors service health, latency, and error rates
+
+groups:
+  - name: dataenginex.rules
+    rules:
+      - alert: HighErrorRate
+        expr: |
+          sum(rate(http_requests_total{status=~"5.."}[5m])) by (service)
+          /
+          sum(rate(http_requests_total[5m])) by (service)
+          > 0.05
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High error rate on {{ $labels.service }}"
+          description: >
+            {{ $labels.service }} has an error rate of
+            {{ $value | humanizePercentage }} over the last 5 minutes.
+
+      - alert: HighLatency
+        expr: |
+          histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le, service))
+          > 2.0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High p95 latency on {{ $labels.service }}"
+          description: >
+            {{ $labels.service }} p95 latency is {{ $value }}s
+            (threshold: 2s) over the last 5 minutes.
+
+      - alert: ServiceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Service {{ $labels.job }} is down"
+          description: >
+            {{ $labels.instance }} of job {{ $labels.job }}
+            has been unreachable for more than 1 minute.

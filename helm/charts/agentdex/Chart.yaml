@@ -1,0 +1,15 @@
+apiVersion: v2
+name: agentdex
+description: AgentDEX — AI agent orchestration and execution platform
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+maintainers:
+  - name: DataEngineX
+home: https://github.com/TheDataEngineX/infradex
+sources:
+  - https://github.com/TheDataEngineX/agentdex
+keywords:
+  - agents
+  - ai
+  - orchestration

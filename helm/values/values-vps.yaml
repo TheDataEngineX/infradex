@@ -1,0 +1,73 @@
+# VPS-Optimized Values
+# For single-node K3s deployments on resource-constrained VPS (4-8 GB RAM)
+# Usage: helm install <chart> -f values-vps.yaml
+
+global:
+  environment: vps
+
+datadex:
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  autoscaling:
+    enabled: false
+
+careerdex:
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  autoscaling:
+    enabled: false
+
+agentdex:
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  autoscaling:
+    enabled: false
+
+dex-studio:
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
+  autoscaling:
+    enabled: false
+
+prometheus:
+  server:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 250m
+        memory: 512Mi
+
+grafana:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
