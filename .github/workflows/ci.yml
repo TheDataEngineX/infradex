@@ -47,4 +47,30 @@ jobs:
           version: "latest"
       - run: uv python install ${{ env.PYTHON_VERSION }}
       - run: uv sync
-      - run: uv run pytest tests/ -x --tb=short -q
+      - run: uv run pytest tests/ -x --tb=short -q --cov=infradex --cov-report=xml
+      - uses: codecov/codecov-action@v4
+        with:
+          flags: infradex
+          fail_ci_if_error: false
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - name: Terraform format check
+        run: terraform fmt -check -recursive terraform/
+
+  helm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-helm@v4
+      - name: Lint all charts
+        run: |
+          for chart in helm/*/; do
+            echo "Linting $chart"
+            helm lint "$chart"
+          done

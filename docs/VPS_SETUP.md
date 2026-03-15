@@ -95,17 +95,17 @@ curl http://YOUR_VPS_IP:8002/health   # agentdex
 
 ## Resource Budget (8 GB VPS)
 
-| Component   | CPU    | Memory |
+| Component | CPU | Memory |
 |-------------|--------|--------|
-| K3s system  | 250m   | 512Mi  |
-| datadex     | 250m   | 256Mi  |
-| careerdex   | 250m   | 256Mi  |
-| agentdex    | 250m   | 256Mi  |
-| dex-studio  | 100m   | 128Mi  |
-| PostgreSQL  | 250m   | 256Mi  |
-| Redis       | 100m   | 128Mi  |
-| Prometheus  | 100m   | 256Mi  |
-| Grafana     | 50m    | 64Mi   |
-| **Total**   | **1.6**| **~2Gi**|
+| K3s system | 250m | 512Mi |
+| datadex | 250m | 256Mi |
+| careerdex | 250m | 256Mi |
+| agentdex | 250m | 256Mi |
+| dex-studio | 100m | 128Mi |
+| PostgreSQL | 250m | 256Mi |
+| Redis | 100m | 128Mi |
+| Prometheus | 100m | 256Mi |
+| Grafana | 50m | 64Mi |
+| **Total** | **1.6**| **~2Gi**|
 
 Leaves ~6 GB headroom for spikes and OS.

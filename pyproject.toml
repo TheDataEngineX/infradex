@@ -39,6 +39,7 @@ packages = ["src/infradex"]
 [dependency-groups]
 dev = [
     "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
     "ruff>=0.15.0",
     "mypy>=1.19.0",
     "poethepoet>=0.40.0",

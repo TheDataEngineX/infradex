@@ -31,10 +31,11 @@ Backup strategy, recovery procedures, and RTO/RPO targets for the DataEngineX pl
 ### Backup Verification
 
 Run monthly restore drills:
+
 1. Restore PostgreSQL backup to a test database
-2. Verify row counts match production
-3. Run application health checks against test database
-4. Document results and any issues
+1. Verify row counts match production
+1. Run application health checks against test database
+1. Document results and any issues
 
 ## Recovery Procedures
 
@@ -43,40 +44,46 @@ Run monthly restore drills:
 **Time estimate: 30-60 minutes**
 
 1. Provision new VPS
+
    ```bash
    hcloud server create --name dex-server-recovery --type cx31 --image ubuntu-22.04
    ```
 
-2. Update inventory with new IP
+1. Update inventory with new IP
+
    ```bash
    vim ansible/inventory/hosts.yml
    ```
 
-3. Run full deployment
+1. Run full deployment
+
    ```bash
    ansible-playbook -i ansible/inventory/hosts.yml ansible/playbooks/install-k3s.yml
    ./scripts/one-click-deploy.sh
    ```
 
-4. Restore database
+1. Restore database
+
    ```bash
    gunzip -c /path/to/backup/dex_YYYYMMDD_HHMMSS.sql.gz | \
      psql -h localhost -U postgres -d dex
    ```
 
-5. Update DNS to new IP
+1. Update DNS to new IP
 
 ### Scenario 2: Database Corruption
 
 **Time estimate: 15-30 minutes**
 
 1. Stop application pods
+
    ```bash
    kubectl scale deployment --replicas=0 -l app=datadex -n dex
    kubectl scale deployment --replicas=0 -l app=careerdex -n dex
    ```
 
-2. Restore from latest backup
+1. Restore from latest backup
+
    ```bash
    # Drop and recreate database
    psql -h localhost -U postgres -c "DROP DATABASE IF EXISTS dex;"
@@ -86,46 +93,50 @@ Run monthly restore drills:
    gunzip -c /path/to/latest/backup.sql.gz | psql -h localhost -U postgres -d dex
    ```
 
-3. Restart application pods
+1. Restart application pods
+
    ```bash
    kubectl scale deployment --replicas=1 -l app=datadex -n dex
    kubectl scale deployment --replicas=1 -l app=careerdex -n dex
    ```
 
-4. Verify data integrity
+1. Verify data integrity
 
 ### Scenario 3: Kubernetes Cluster Failure
 
 **Time estimate: 30 minutes**
 
 1. Reinstall K3s
+
    ```bash
    ansible-playbook -i ansible/inventory/hosts.yml ansible/playbooks/install-k3s.yml
    ```
 
-2. Redeploy all Helm charts
+1. Redeploy all Helm charts
+
    ```bash
    helm install datadex helm/charts/datadex -f helm/values/values-vps.yaml
    helm install careerdex helm/charts/careerdex -f helm/values/values-vps.yaml
    helm install agentdex helm/charts/agentdex -f helm/values/values-vps.yaml
    ```
 
-3. Restore persistent data (PostgreSQL, Qdrant)
+1. Restore persistent data (PostgreSQL, Qdrant)
 
 ### Scenario 4: Secret Compromise
 
 **Time estimate: 10 minutes**
 
 1. Rotate all secrets immediately
+
    ```bash
    ./scripts/rotate-secrets.sh dex
    ```
 
-2. Revoke any external API tokens (Cloudflare, container registry)
+1. Revoke any external API tokens (Cloudflare, container registry)
 
-3. Audit access logs for unauthorized activity
+1. Audit access logs for unauthorized activity
 
-4. Update monitoring alerts for anomalous patterns
+1. Update monitoring alerts for anomalous patterns
 
 ## Communication Plan
 
@@ -138,8 +149,9 @@ Run monthly restore drills:
 ## Post-Incident
 
 After every incident:
+
 1. Conduct blameless post-mortem
-2. Document root cause and timeline
-3. Update runbooks if procedures were unclear
-4. Implement preventive measures
-5. Test the fix with a simulated failure
+1. Document root cause and timeline
+1. Update runbooks if procedures were unclear
+1. Implement preventive measures
+1. Test the fix with a simulated failure

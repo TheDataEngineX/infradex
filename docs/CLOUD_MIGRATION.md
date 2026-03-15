@@ -14,6 +14,7 @@ Migrate from a single-VPS K3s deployment to managed Kubernetes on AWS EKS or GCP
 ### Path A: VPS → AWS EKS
 
 1. **Provision EKS cluster**
+
    ```bash
    cd terraform/environments/aws
    terraform init
@@ -21,12 +22,14 @@ Migrate from a single-VPS K3s deployment to managed Kubernetes on AWS EKS or GCP
    terraform apply
    ```
 
-2. **Update kubeconfig**
+1. **Update kubeconfig**
+
    ```bash
    aws eks update-kubeconfig --name dex-cluster --region us-east-1
    ```
 
-3. **Deploy with cloud values**
+1. **Deploy with cloud values**
+
    ```bash
    helm install datadex helm/charts/datadex -f helm/values/values-cloud.yaml
    helm install careerdex helm/charts/careerdex -f helm/values/values-cloud.yaml
@@ -37,6 +40,7 @@ Migrate from a single-VPS K3s deployment to managed Kubernetes on AWS EKS or GCP
 ### Path B: VPS → GCP GKE
 
 1. **Provision GKE cluster**
+
    ```bash
    cd terraform/environments/gcp
    terraform init
@@ -44,12 +48,13 @@ Migrate from a single-VPS K3s deployment to managed Kubernetes on AWS EKS or GCP
    terraform apply -var="gcp_project=your-project-id"
    ```
 
-2. **Update kubeconfig**
+1. **Update kubeconfig**
+
    ```bash
    gcloud container clusters get-credentials dex-cluster --region us-central1
    ```
 
-3. **Deploy with cloud values** (same Helm commands as Path A)
+1. **Deploy with cloud values** (same Helm commands as Path A)
 
 ## Data Migration Checklist
 
@@ -82,14 +87,15 @@ Migrate from a single-VPS K3s deployment to managed Kubernetes on AWS EKS or GCP
 ## DNS Cutover
 
 1. Lower TTL to 60s (24 hours before migration)
-2. Deploy and verify cloud environment
-3. Update DNS A record to cloud load balancer IP
-4. Monitor for errors during propagation
-5. Restore TTL to 300s after verification
+1. Deploy and verify cloud environment
+1. Update DNS A record to cloud load balancer IP
+1. Monitor for errors during propagation
+1. Restore TTL to 300s after verification
 
 ## Rollback Plan
 
 Keep the VPS running for 72 hours after cutover:
+
 - DNS can be reverted in < 5 minutes
 - VPS data remains intact as fallback
 - Only decommission after full verification period
