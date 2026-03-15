@@ -48,7 +48,7 @@ jobs:
       - run: uv python install ${{ env.PYTHON_VERSION }}
       - run: uv sync
       - run: uv run pytest tests/ -x --tb=short -q --cov=infradex --cov-report=xml
-      - uses: codecov/codecov-action@v4
+      - uses: codecov/codecov-action@v5
         with:
           flags: infradex
           fail_ci_if_error: false
