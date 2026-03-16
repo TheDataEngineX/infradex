@@ -2,7 +2,7 @@
 # Production-grade Kubernetes on Google Cloud
 
 terraform {
-  required_version = ">= 1.5"
+  required_version = ">= 1.9.0"
 
   backend "gcs" {
     bucket = "infradex-terraform-state"

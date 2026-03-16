@@ -1,0 +1,80 @@
+[tool.poe]
+executor.type = "uv"
+
+# ── Testing ─────────────────────────────────────────────────────────────────
+[tool.poe.tasks.test-core]
+cmd = "pytest tests/ -v --tb=short"
+help = "Internal: run all tests without dependency sync"
+
+[tool.poe.tasks.test-unit-core]
+cmd = "pytest tests/unit/ -v --tb=short"
+help = "Internal: run unit tests without dependency sync"
+
+[tool.poe.tasks.test-cov-core]
+cmd = "pytest tests/ -v --cov=infradex --cov-report=html --cov-report=xml:coverage.xml --cov-report=term-missing"
+help = "Internal: run coverage tests without dependency sync"
+
+[tool.poe.tasks.test]
+shell = "poe uv-sync && poe test-core"
+help = "Run all tests"
+
+[tool.poe.tasks.test-unit]
+shell = "poe uv-sync && poe test-unit-core"
+help = "Run unit tests only"
+
+[tool.poe.tasks.test-cov]
+shell = "poe uv-sync && poe test-cov-core"
+help = "Run tests with coverage report (HTML + XML + terminal)"
+
+# ── Linting ────────────────────────────────────────────────────────────────
+[tool.poe.tasks.lint]
+shell = "ruff check src/ && find . -name '*.yml' -not -path './.venv/*' -not -path './.github/*' | head -20 | xargs python3 -c \"import sys,yaml; [yaml.safe_load(open(f)) for f in sys.argv[1:]]\" && echo 'YAML valid'"
+help = "Lint Python + validate YAML files"
+
+[tool.poe.tasks.lint-fix]
+shell = "ruff check --fix src/ && ruff format src/"
+help = "Auto-fix Python lint issues"
+
+[tool.poe.tasks.typecheck]
+cmd = "mypy src/infradex/ --strict"
+help = "Run mypy strict type checking"
+
+# ── Security ────────────────────────────────────────────────────────────────
+[tool.poe.tasks.security]
+cmd = "uvx pip-audit --progress-spinner off"
+help = "Audit Python dependencies for vulnerabilities"
+
+[tool.poe.tasks.check-all]
+shell = "poe lint && poe typecheck && poe security"
+help = "Run full checks: lint, typecheck, security"
+
+# ── Cleanup ─────────────────────────────────────────────────────────────────
+[tool.poe.tasks.clean]
+shell = "find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null; rm -rf .mypy_cache .ruff_cache 2>/dev/null; echo 'Cleaned'"
+help = "Remove cache and build artifacts"
+
+# ── UV Package Manager ──────────────────────────────────────────────────────
+[tool.poe.tasks.uv-lock]
+cmd = "uv lock"
+help = "Resolve and write uv.lock"
+
+[tool.poe.tasks.uv-sync]
+cmd = "uv sync"
+help = "Install from uv.lock"
+
+# ── Version Management ──────────────────────────────────────────────────────
+[tool.poe.tasks.version]
+shell = "python3 -c \"import tomllib; t=tomllib.load(open('pyproject.toml','rb')); print(t['project']['version'])\""
+help = "Show current version"
+
+[tool.poe.tasks.version-patch]
+shell = "bash ../.github/scripts/bump-version.sh patch && uv lock"
+help = "Bump patch version (x.x.X) — bug fixes, no new features"
+
+[tool.poe.tasks.version-minor]
+shell = "bash ../.github/scripts/bump-version.sh minor && uv lock"
+help = "Bump minor version (x.X.0) — new backward-compatible features"
+
+[tool.poe.tasks.version-major]
+shell = "bash ../.github/scripts/bump-version.sh major && uv lock"
+help = "Bump major version (X.0.0) — breaking changes"

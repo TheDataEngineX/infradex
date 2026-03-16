@@ -9,7 +9,7 @@
 #   }
 
 terraform {
-  required_version = ">= 1.5"
+  required_version = ">= 1.9.0"
 }
 
 variable "redis_version" {

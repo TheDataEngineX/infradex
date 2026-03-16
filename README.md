@@ -1,6 +1,7 @@
 # InfraDEX
 
 [![CI](https://github.com/TheDataEngineX/infradex/actions/workflows/ci.yml/badge.svg)](https://github.com/TheDataEngineX/infradex/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/TheDataEngineX/infradex)](https://github.com/TheDataEngineX/infradex/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 **Infrastructure-as-Code for the TheDataEngineX platform** — Terraform modules, Helm charts, Ansible playbooks, and monitoring stack to deploy the entire platform on VPS or cloud.
