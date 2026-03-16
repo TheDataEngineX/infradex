@@ -70,7 +70,7 @@ jobs:
       - uses: azure/setup-helm@v4
       - name: Lint all charts
         run: |
-          for chart in helm/*/; do
+          for chart in helm/charts/*/; do
             echo "Linting $chart"
             helm lint "$chart"
           done
