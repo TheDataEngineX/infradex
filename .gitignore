@@ -82,3 +82,38 @@ site/
 
 # Notes
 Notes.txt
+
+# Terraform state — contains real IPs, credentials, resource IDs
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+*.tfvars
+*.tfvars.json
+!example.tfvars
+
+# Ansible secrets
+ansible/inventory/hosts
+ansible/inventory/*.ini
+vault_password
+*.vault
+
+# Kubernetes credentials
+kubeconfig
+kubeconfig.yaml
+kubeconfig.yml
+*.kubeconfig
+
+# TLS / SSH keys
+*.pem
+*.key
+*.crt
+*.p12
+id_rsa
+id_ed25519
+
+# Helm rendered secrets
+secrets.yaml
+secrets.yml
+*-secret.yaml
+*-secret.yml
