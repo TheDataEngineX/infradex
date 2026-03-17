@@ -1,3 +1,10 @@
 """InfraDEX — Infrastructure-as-Code for TheDataEngineX platform."""
 
-__version__ = "0.1.0"
+from __future__ import annotations
+
+try:
+    from importlib.metadata import version
+
+    __version__ = version("infradex")
+except Exception:
+    __version__ = "0.1.0"

@@ -24,8 +24,9 @@ def deploy(target: str, dry_run: bool) -> None:
         console.print(f"[yellow]DRY RUN[/yellow] — would deploy to: [bold]{target}[/bold]")
         return
     console.print(f"Deploying to: [bold]{target}[/bold]")
-    # TODO: run terraform + helm + ansible
-    console.print("[green]✓[/green] Deployment complete")
+    raise NotImplementedError(
+        "Deployment automation not yet implemented — connect terraform + helm + ansible"
+    )
 
 
 @main.command()
@@ -54,16 +55,16 @@ def status() -> None:
 def backup() -> None:
     """Backup all databases."""
     console.print("Backing up PostgreSQL...")
-    # TODO: pg_dump via fabric SSH
-    console.print("[green]✓[/green] Backup complete")
+    raise NotImplementedError("Database backup not yet implemented — connect pg_dump via SSH")
 
 
 @main.command(name="rotate-secrets")
 def rotate_secrets() -> None:
     """Rotate all secrets and tokens."""
     console.print("Rotating secrets...")
-    # TODO: rotate JWT keys, DB passwords, API tokens
-    console.print("[green]✓[/green] Secrets rotated")
+    raise NotImplementedError(
+        "Secret rotation not yet implemented — connect JWT keys, DB passwords, API tokens"
+    )
 
 
 @main.command()
@@ -71,8 +72,7 @@ def rotate_secrets() -> None:
 def logs(tail: int) -> None:
     """Aggregate logs from all services."""
     console.print(f"Fetching last {tail} lines from all services...")
-    # TODO: kubectl logs or Loki query
-    console.print("(no services running)")
+    raise NotImplementedError("Log aggregation not yet implemented — connect kubectl logs or Loki")
 
 
 if __name__ == "__main__":

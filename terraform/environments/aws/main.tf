@@ -2,7 +2,7 @@
 # Production-grade Kubernetes on AWS
 
 terraform {
-  required_version = ">= 1.5"
+  required_version = ">= 1.9.0"
 
   backend "s3" {
     bucket         = "infradex-terraform-state"

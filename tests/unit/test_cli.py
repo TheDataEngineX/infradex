@@ -53,11 +53,10 @@ class TestDeployCommand:
         assert "gcp" in result.output.lower()
 
     def test_deploy_without_dry_run(self) -> None:
-        """Test deploy without dry-run flag."""
+        """Deploy without --dry-run prints intent then raises NotImplementedError."""
         runner = CliRunner()
         result = runner.invoke(main, ["deploy", "vps"])
-        assert result.exit_code == 0
-        assert "deployment complete" in result.output.lower()
+        assert result.exit_code != 0
         assert "deploying to" in result.output.lower()
 
     def test_deploy_invalid_target(self) -> None:
@@ -86,21 +85,21 @@ class TestBackupCommand:
     """Test backup command."""
 
     def test_backup_output(self) -> None:
-        """Test backup command output."""
+        """Backup prints intent then raises NotImplementedError."""
         runner = CliRunner()
         result = runner.invoke(main, ["backup"])
-        assert result.exit_code == 0
-        assert "backup" in result.output.lower()
+        assert result.exit_code != 0
+        assert "backing up" in result.output.lower()
 
 
 class TestRotateSecretsCommand:
     """Test rotate-secrets command."""
 
     def test_rotate_secrets_output(self) -> None:
-        """Test rotate-secrets command output."""
+        """rotate-secrets prints intent then raises NotImplementedError."""
         runner = CliRunner()
         result = runner.invoke(main, ["rotate-secrets"])
-        assert result.exit_code == 0
+        assert result.exit_code != 0
         assert "secret" in result.output.lower()
 
 
@@ -108,22 +107,22 @@ class TestLogsCommand:
     """Test logs command."""
 
     def test_logs_default_tail(self) -> None:
-        """Test logs command with default tail."""
+        """logs prints intent then raises NotImplementedError ."""
         runner = CliRunner()
         result = runner.invoke(main, ["logs"])
-        assert result.exit_code == 0
+        assert result.exit_code != 0
         assert "50" in result.output or "fetching" in result.output.lower()
 
     def test_logs_custom_tail(self) -> None:
-        """Test logs command with custom tail."""
+        """logs with -n passes value through before raising NotImplementedError."""
         runner = CliRunner()
         result = runner.invoke(main, ["logs", "-n", "100"])
-        assert result.exit_code == 0
+        assert result.exit_code != 0
         assert "100" in result.output
 
     def test_logs_tail_long_option(self) -> None:
-        """Test logs command with --tail option."""
+        """logs with --tail passes value through before raising NotImplementedError."""
         runner = CliRunner()
         result = runner.invoke(main, ["logs", "--tail", "200"])
-        assert result.exit_code == 0
+        assert result.exit_code != 0
         assert "200" in result.output

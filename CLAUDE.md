@@ -8,7 +8,7 @@
 
 **Stack:** Python 3.12+ (CLI) · Terraform · Helm · Ansible · K3s · ArgoCD · Prometheus/Grafana
 
-**Version:** 0.1.0 | **Target:** Single Hetzner CX41 VPS (K3s) or AWS EKS
+**Version:** `uv run poe version` | **Target:** Single Hetzner CX41 VPS (K3s) or AWS EKS
 
 ## Build & Run Commands
 
