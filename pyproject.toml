@@ -1,6 +1,6 @@
 [project]
 name = "infradex"
-version = "0.1.0"
+version = "0.1.1"
 description = "Infrastructure-as-Code CLI for TheDataEngineX platform"
 authors = [
     {name = "Jay", email = "jayapal.myaka99@gmail.com"}
