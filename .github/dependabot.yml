@@ -4,15 +4,19 @@ updates:
     directory: "/"
     schedule:
       interval: weekly
+    target-branch: dev
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
       interval: weekly
+    target-branch: dev
   - package-ecosystem: terraform
     directory: "/terraform"
     schedule:
       interval: weekly
+    target-branch: dev
   - package-ecosystem: helm
     directory: "/helm"
     schedule:
       interval: weekly
+    target-branch: dev
