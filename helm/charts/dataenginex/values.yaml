@@ -7,7 +7,7 @@ image:
 
 service:
   type: ClusterIP
-  port: 8000
+  port: 17000
 
 ingress:
   enabled: true
@@ -28,4 +28,4 @@ env:
 
 healthCheck:
   path: /health
-  port: 8000
+  port: 17000

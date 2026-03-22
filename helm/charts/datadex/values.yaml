@@ -7,9 +7,9 @@ image:
 
 service:
   type: ClusterIP
-  port: 8001
+  port: 17001
 
-containerPort: 8001
+containerPort: 17001
 
 env:
   - name: DEX_ENV

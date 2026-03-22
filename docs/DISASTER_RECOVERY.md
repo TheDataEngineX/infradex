@@ -78,8 +78,7 @@ Run monthly restore drills:
 1. Stop application pods
 
    ```bash
-   kubectl scale deployment --replicas=0 -l app=datadex -n dex
-   kubectl scale deployment --replicas=0 -l app=careerdex -n dex
+   kubectl scale deployment --replicas=0 -l app=dataenginex -n dex
    ```
 
 1. Restore from latest backup
@@ -96,8 +95,7 @@ Run monthly restore drills:
 1. Restart application pods
 
    ```bash
-   kubectl scale deployment --replicas=1 -l app=datadex -n dex
-   kubectl scale deployment --replicas=1 -l app=careerdex -n dex
+   kubectl scale deployment --replicas=1 -l app=dataenginex -n dex
    ```
 
 1. Verify data integrity
@@ -115,9 +113,8 @@ Run monthly restore drills:
 1. Redeploy all Helm charts
 
    ```bash
-   helm install datadex helm/charts/datadex -f helm/values/values-vps.yaml
-   helm install careerdex helm/charts/careerdex -f helm/values/values-vps.yaml
-   helm install agentdex helm/charts/agentdex -f helm/values/values-vps.yaml
+   helm install dataenginex helm/charts/dataenginex -f helm/values/values-vps.yaml
+   helm install dex-studio helm/charts/dex-studio -f helm/values/values-vps.yaml
    ```
 
 1. Restore persistent data (PostgreSQL, Qdrant)
