@@ -31,9 +31,7 @@ Migrate from a single-VPS K3s deployment to managed Kubernetes on AWS EKS or GCP
 1. **Deploy with cloud values**
 
    ```bash
-   helm install datadex helm/charts/datadex -f helm/values/values-cloud.yaml
-   helm install careerdex helm/charts/careerdex -f helm/values/values-cloud.yaml
-   helm install agentdex helm/charts/agentdex -f helm/values/values-cloud.yaml
+   helm install dataenginex helm/charts/dataenginex -f helm/values/values-cloud.yaml
    helm install dex-studio helm/charts/dex-studio -f helm/values/values-cloud.yaml
    ```
 

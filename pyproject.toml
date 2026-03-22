@@ -6,14 +6,14 @@ authors = [
     {name = "Jay", email = "jayapal.myaka99@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 license = {text = "MIT"}
 keywords = ["infrastructure", "kubernetes", "terraform", "devops", "dataenginex"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: System :: Systems Administration",
 ]
 
@@ -40,9 +40,9 @@ packages = ["src/infradex"]
 dev = [
     "pytest>=9.0.2",
     "pytest-cov>=7.0.0",
-    "ruff>=0.15.0",
-    "mypy>=1.19.0",
-    "poethepoet>=0.40.0",
+    "ruff>=0.15.6",
+    "mypy>=1.19.1",
+    "poethepoet>=0.42.1",
 ]
 
 [tool.uv]
@@ -51,13 +51,16 @@ default-groups = ["dev"]
 
 [tool.ruff]
 line-length = 100
-target-version = "py312"
+target-version = "py313"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM", "C90"]
 
+[tool.ruff.lint.mccabe]
+max-complexity = 8
+
 [tool.mypy]
-python_version = "3.12"
+python_version = "3.13"
 strict = true
 
 [tool.pytest.ini_options]

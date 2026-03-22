@@ -38,11 +38,8 @@ def status() -> None:
     table.add_column("Pod")
     table.add_column("Port")
     for svc, port in [
-        ("dataenginex", "8000"),
-        ("datadex", "8001"),
-        ("agentdex", "8002"),
-        ("careerdex", "8003"),
-        ("dex-studio", "8080"),
+        ("dataenginex", "17000"),
+        ("dex-studio", "7860"),
         ("postgres", "5432"),
         ("redis", "6379"),
         ("qdrant", "6333"),

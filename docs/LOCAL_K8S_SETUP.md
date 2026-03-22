@@ -169,17 +169,17 @@ kubectl describe deployment dex -n dex-dev
 
 ```bash
 # Port forward DEX service
-kubectl port-forward -n dex-dev svc/dex 8000:8000
+kubectl port-forward -n dex-dev svc/dex 17000:17000
 
-# Access application at: http://localhost:8000
+# Access application at: http://localhost:17000
 ```
 
 Test endpoints:
 
-- http://localhost:8000/
-- http://localhost:8000/health
-- http://localhost:8000/ready
-- http://localhost:8000/docs (FastAPI Swagger UI)
+- http://localhost:17000/
+- http://localhost:17000/health
+- http://localhost:17000/ready
+- http://localhost:17000/docs (FastAPI Swagger UI)
 
 ## Step 10: Test GitOps Workflow
 

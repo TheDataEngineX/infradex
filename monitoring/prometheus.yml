@@ -17,4 +17,4 @@ scrape_configs:
     metrics_path: /metrics       # Prometheus exposition endpoint
     static_configs:
       - targets:
-          - dex-api:8000         # Docker Compose / K8s service name + port
+          - dex-api:17000         # Docker Compose / K8s service name + port
