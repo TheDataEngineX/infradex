@@ -81,11 +81,8 @@ Pre-built dashboards cover: API latency, pipeline throughput, ML model drift, ag
 
 | Chart | Port | Description |
 |---|---|---|
-| `dataenginex` | 8000 | Core framework API |
-| `datadex` | 8001 | Pipeline engine API |
-| `agentdex` | 8002 | Agent platform API |
-| `careerdex` | 8003 | Career intelligence API |
-| `dex-studio` | 8080 | Desktop UI (server mode) |
+| `dataenginex` | 17000 | Core framework API (data + ML + AI) |
+| `dex-studio` | 7860 | Desktop UI (server mode) |
 | `dex-monitoring` | — | Prometheus + Grafana + Loki + Jaeger |
 
 ### Ansible Playbooks
@@ -102,11 +99,8 @@ Single Hetzner CX41 (~$15-30/mo):
 
 ```
 K3s → Traefik → Let's Encrypt TLS
-├── dataenginex   :8000
-├── datadex       :8001
-├── agentdex      :8002
-├── careerdex     :8003
-├── dex-studio    :8080
+├── dataenginex   :17000  (data + ML + AI)
+├── dex-studio    :7860
 ├── PostgreSQL, Redis, MinIO, Qdrant
 └── Prometheus, Grafana, Loki
 ```

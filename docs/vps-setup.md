@@ -56,9 +56,7 @@ ansible-playbook -i ansible/inventory/hosts.yml ansible/playbooks/install-k3s.ym
 export KUBECONFIG=./kubeconfig
 
 # Install core services
-helm install datadex helm/charts/datadex -f helm/values/values-vps.yaml
-helm install careerdex helm/charts/careerdex -f helm/values/values-vps.yaml
-helm install agentdex helm/charts/agentdex -f helm/values/values-vps.yaml
+helm install dataenginex helm/charts/dataenginex -f helm/values/values-vps.yaml
 helm install dex-studio helm/charts/dex-studio -f helm/values/values-vps.yaml
 ```
 
@@ -88,9 +86,7 @@ terraform apply \
 kubectl get pods -A
 
 # Check service health
-curl http://YOUR_VPS_IP:8001/health   # datadex
-curl http://YOUR_VPS_IP:8003/health   # careerdex
-curl http://YOUR_VPS_IP:8002/health   # agentdex
+curl http://YOUR_VPS_IP:17000/health   # dataenginex
 ```
 
 ## Resource Budget (8 GB VPS)
@@ -98,14 +94,12 @@ curl http://YOUR_VPS_IP:8002/health   # agentdex
 | Component | CPU | Memory |
 |-------------|--------|--------|
 | K3s system | 250m | 512Mi |
-| datadex | 250m | 256Mi |
-| careerdex | 250m | 256Mi |
-| agentdex | 250m | 256Mi |
+| dataenginex | 500m | 512Mi |
 | dex-studio | 100m | 128Mi |
 | PostgreSQL | 250m | 256Mi |
 | Redis | 100m | 128Mi |
 | Prometheus | 100m | 256Mi |
 | Grafana | 50m | 64Mi |
-| **Total** | **1.6**| **~2Gi**|
+| **Total** | **1.35** | **~1.8Gi** |
 
 Leaves ~6 GB headroom for spikes and OS.

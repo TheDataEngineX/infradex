@@ -34,12 +34,12 @@ jobs:
           enable-cache: true
       - uses: actions/setup-python@v6
         with:
-          python-version: "3.12"
+          python-version: "3.13"
       - run: uv sync
       - run: uv run poe lint
       - run: uv run poe typecheck
       - run: uv run pytest tests/ -x --tb=short -q --cov=infradex --cov-report=xml
-      - uses: codecov/codecov-action@v5
+      - uses: codecov/codecov-action@v6
         with:
           flags: infradex
           fail_ci_if_error: false

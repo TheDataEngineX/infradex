@@ -7,13 +7,13 @@ image:
 
 service:
   type: ClusterIP
-  port: 8080
+  port: 7860
 
-containerPort: 8080
+containerPort: 7860
 
 env:
   - name: DEX_ENGINE_URL
-    value: "http://datadex:8001"
+    value: "http://dataenginex:17000"
   - name: DEX_ENV
     value: "production"
   - name: LOG_LEVEL

@@ -31,7 +31,7 @@ spec:
     spec:
       project: dex-project
       source:
-        repoURL: https://github.com/TheDataEngineX/DEX
+        repoURL: https://github.com/TheDataEngineX/dataenginex
         targetRevision: "{{branch}}"
         path: "infra/argocd/overlays/{{environment}}"
       destination:
@@ -60,7 +60,7 @@ spec:
   description: DEX - DataEngineX Project
 
   sourceRepos:
-    - 'https://github.com/TheDataEngineX/DEX'
+    - 'https://github.com/TheDataEngineX/dataenginex'
 
   destinations:
     - namespace: 'dex'

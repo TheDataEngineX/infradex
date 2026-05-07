@@ -16,7 +16,7 @@ patches:
         value: 1
       - op: replace
         path: /spec/template/spec/containers/0/image
-        value: ghcr.io/thedataenginex/datadex:dev
+        value: ghcr.io/thedataenginex/dataenginex:dev
 
 commonLabels:
   environment: dev

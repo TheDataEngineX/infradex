@@ -28,7 +28,7 @@ spec:
               kubernetes.io/metadata.name: ingress-nginx
       ports:
         - protocol: TCP
-          port: 8000
+          port: 17000
     # Allow Prometheus metric scraping
     - from:
         - namespaceSelector:
@@ -36,7 +36,7 @@ spec:
               kubernetes.io/metadata.name: monitoring
       ports:
         - protocol: TCP
-          port: 8000
+          port: 17000
   egress:
     # Allow DNS resolution (UDP + TCP)
     - to:
