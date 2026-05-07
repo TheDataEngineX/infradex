@@ -1,0 +1,55 @@
+# Authentik OIDC/SSO — TheDataEngineX platform
+# Docs: https://docs.goauthentik.io/docs/installation/helm
+
+authentik:
+  secret_key: "${AUTHENTIK_SECRET_KEY}"    # set via External Secrets / Doppler
+  error_reporting:
+    enabled: false
+  postgresql:
+    host: postgres
+    name: authentik
+    user: authentik
+    password: "${AUTHENTIK_DB_PASSWORD}"
+  redis:
+    host: redis
+
+server:
+  replicas: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.tls: "true"
+    hosts:
+      - host: auth.thedataenginex.org
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: authentik-tls
+        hosts:
+          - auth.thedataenginex.org
+
+worker:
+  replicas: 1
+  resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+    limits:
+      cpu: 250m
+      memory: 512Mi
+
+# OIDC applications wired to dex and dex-studio
+# Configure via Authentik UI after first boot:
+#   1. Create Application: "DEX API"    (client_id: dex-api)
+#   2. Create Application: "DEX Studio" (client_id: dex-studio)
+#   3. Create Application: "CareerDEX"  (client_id: careerdex)
+#   4. Set DEX_JWKS_URL=https://auth.thedataenginex.org/application/o/dex-api/.well-known/jwks.json

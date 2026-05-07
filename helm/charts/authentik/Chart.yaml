@@ -1,0 +1,10 @@
+apiVersion: v2
+name: authentik
+description: Authentik OIDC/SSO provider for TheDataEngineX platform
+type: application
+version: 0.1.0
+appVersion: "2024.12.0"
+dependencies:
+  - name: authentik
+    version: "2024.12.0"
+    repository: https://charts.goauthentik.io
