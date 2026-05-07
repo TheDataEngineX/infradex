@@ -60,7 +60,7 @@ jobs:
     if: github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v6
-      - uses: azure/setup-helm@v4
+      - uses: azure/setup-helm@v5
       - name: Lint all charts
         run: |
           for chart in helm/charts/*/; do
