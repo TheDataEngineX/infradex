@@ -5,7 +5,7 @@
 global:
   environment: cloud
 
-datadex:
+dataenginex:
   replicaCount: 3
   resources:
     requests:
@@ -19,36 +19,6 @@ datadex:
     minReplicas: 2
     maxReplicas: 10
     targetCPUUtilizationPercentage: 70
-
-careerdex:
-  replicaCount: 3
-  resources:
-    requests:
-      cpu: 500m
-      memory: 512Mi
-    limits:
-      cpu: "1"
-      memory: 1Gi
-  autoscaling:
-    enabled: true
-    minReplicas: 2
-    maxReplicas: 10
-    targetCPUUtilizationPercentage: 70
-
-agentdex:
-  replicaCount: 2
-  resources:
-    requests:
-      cpu: 500m
-      memory: 512Mi
-    limits:
-      cpu: "1"
-      memory: 1Gi
-  autoscaling:
-    enabled: true
-    minReplicas: 2
-    maxReplicas: 8
-    targetCPUUtilizationPercentage: 75
 
 dex-studio:
   replicaCount: 2

@@ -20,9 +20,7 @@ ansible-playbook "$INFRADEX_ROOT/ansible/playbooks/install-k3s.yml" -i "$INFRADE
 # 3. Deploy services via Helm
 echo "→ Step 3/4: Deploying services..."
 helm upgrade --install dataenginex "$INFRADEX_ROOT/helm/charts/dataenginex/" -f "$INFRADEX_ROOT/helm/values/values-vps.yaml"
-# helm upgrade --install datadex ...
-# helm upgrade --install careerdex ...
-# helm upgrade --install agentdex ...
+helm upgrade --install dex-studio "$INFRADEX_ROOT/helm/charts/dex-studio/" -f "$INFRADEX_ROOT/helm/values/values-vps.yaml"
 
 # 4. Set up monitoring
 echo "→ Step 4/4: Setting up monitoring..."

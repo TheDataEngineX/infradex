@@ -126,7 +126,7 @@ Use this section for organization-level setup and domain cutover to `thedataengi
    - Require pull request reviews
    - Require status checks to pass before merge
    - Enforce CODEOWNERS review where needed
-1. Enable Discussions for `TheDataEngineX/DEX`.
+1. Enable Discussions for `TheDataEngineX/dataenginex`.
 1. Create at least one organization Project and define fields (status, priority, milestone).
 1. Configure project automation inputs:
    - Variable `ORG_PROJECT_URL` = full URL of the org project

@@ -117,3 +117,6 @@ secrets.yaml
 secrets.yml
 *-secret.yaml
 *-secret.yml
+
+# Claude Code — local overrides (personal, never commit)
+.claude/settings.local.json

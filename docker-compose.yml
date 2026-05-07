@@ -4,7 +4,7 @@
 # for local observability development. Not intended for production.
 #
 # Usage:  docker compose up --build
-# Ports:  API 8000 | Prometheus 9090 | Alertmanager 9093
+# Ports:  API 17000 | Prometheus 9090 | Alertmanager 9093
 #         Grafana 3000 | Jaeger UI 16686
 # ---------------------------------------------------------------
 services:
@@ -14,7 +14,7 @@ services:
     build: .                     # Uses ./Dockerfile
     container_name: dex-api
     ports:
-      - "8000:8000"             # FastAPI / Uvicorn
+      - "17000:17000"             # FastAPI / Uvicorn
     environment:
       - LOG_LEVEL=INFO
       - OTLP_ENDPOINT=http://jaeger:4317   # OpenTelemetry collector (Jaeger)
@@ -22,7 +22,7 @@ services:
       - prometheus
       - jaeger
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:17000/health')"]
       interval: 30s
       timeout: 10s
       retries: 3

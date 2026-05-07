@@ -63,7 +63,7 @@
       "type": "stat",
       "targets": [
         {
-          "expr": "up{job=~\"dataenginex|careerdex|agentdex|dex-studio\"}",
+          "expr": "up{job=~\"dataenginex|dex-studio\"}",
           "legendFormat": "{{ job }}",
           "refId": "A"
         }
