@@ -165,19 +165,17 @@ Configure DNS records for `thedataenginex.org`:
 1. Configure Cloudflare DNS (`docs`, `api`, apex).
 1. Trigger workflows manually:
    - `Docs Pages Deploy`
-   - `Label Sync`
    - `Project Automation`
 1. Smoke checks:
    - Docs URL resolves with HTTPS
    - Test issue + PR auto-added to project
-   - Labels from `.github/labels.yml` are present
+   - Labels from `.github/labels.yml` are present (synced via `sync-labels.yml`)
 
 ### Exact Post-Merge Verification Order
 
 1. Merge PR.
 1. Wait for `Docs Pages Deploy` success.
 1. Validate `https://docs.thedataenginex.org`.
-1. Trigger `Label Sync` once and inspect labels.
 1. Open temporary test issue/PR and confirm project automation.
 1. Validate `https://api.thedataenginex.org` TLS/hostname routing.
 1. Send controlled warning alert and verify `.org` sender/recipient behavior.

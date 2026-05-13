@@ -2,9 +2,9 @@ name: Security Scans
 
 on:
   push:
-    branches: [main, dev]
+    branches: [main, dev, stage]
   pull_request:
-    branches: [main, dev]
+    branches: [main, dev, stage]
 
 permissions:
   contents: read
