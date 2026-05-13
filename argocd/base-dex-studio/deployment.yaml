@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dex-studio
+  labels:
+    app: dex-studio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dex-studio
+  template:
+    metadata:
+      labels:
+        app: dex-studio
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: dex-studio
+          image: ghcr.io/thedataenginex/dex-studio:sha-00000000
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          ports:
+            - containerPort: 7860
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 7860
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            timeoutSeconds: 5
+          readinessProbe:
+            tcpSocket:
+              port: 7860
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+          envFrom:
+            - configMapRef:
+                name: dex-studio-config
+                optional: true
+            - secretRef:
+                name: dex-studio-secrets
+                optional: true

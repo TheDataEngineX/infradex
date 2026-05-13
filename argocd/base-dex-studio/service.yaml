@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dex-studio
+  labels:
+    app: dex-studio
+spec:
+  type: ClusterIP
+  ports:
+    - port: 7860
+      targetPort: 7860
+      protocol: TCP
+      name: http
+  selector:
+    app: dex-studio

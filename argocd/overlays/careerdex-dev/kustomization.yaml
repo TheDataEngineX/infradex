@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: careerdex-dev
+
+resources:
+  - ../../base-careerdex
+
+images:
+  - name: ghcr.io/thedataenginex/careerdex
+    newTag: sha-00000000
+
+patches:
+  - target:
+      kind: Deployment
+      name: careerdex
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 1
+
+commonLabels:
+  environment: dev

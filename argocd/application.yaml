@@ -1,11 +1,11 @@
 # ---------------------------------------------------------------
 # ArgoCD ApplicationSet — Branch-based deployment
 # Three long-lived branches map to one environment each:
-#   dev   branch → dex-dev   (development)
-#   stage branch → dex-stage (stage)
-#   main  branch → dex       (production)
-# Overlays live in infradex repo at argocd/overlays/<env>/
-# Image tags are pinned per-overlay and updated by CI/CD workflows
+#   dev   branch → *-dev   (development)
+#   stage branch → *-stage (staging)
+#   main  branch → *-prod  (production)
+# Each app has its own overlay directory per environment.
+# Image tags are pinned per-overlay and updated by CI/CD workflows.
 # ---------------------------------------------------------------
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
@@ -16,18 +16,48 @@ spec:
   generators:
     - list:
         elements:
+          # dex-app — Python API (dataenginex package served as a service)
           - name: dex-dev
             namespace: dex-dev
-            environment: dev
             branch: dev
+            overlay: dev
           - name: dex-stage
             namespace: dex-stage
-            environment: stage
             branch: stage
+            overlay: stage
           - name: dex-prod
             namespace: dex
-            environment: prod
             branch: main
+            overlay: prod
+
+          # dex-studio — Reflex UI application
+          - name: dex-studio-dev
+            namespace: dex-studio-dev
+            branch: dev
+            overlay: dex-studio-dev
+          - name: dex-studio-stage
+            namespace: dex-studio-stage
+            branch: stage
+            overlay: dex-studio-stage
+          - name: dex-studio-prod
+            namespace: dex-studio
+            branch: main
+            overlay: dex-studio-prod
+
+          # careerdex — AI career intelligence application
+          - name: careerdex-dev
+            namespace: careerdex-dev
+            branch: dev
+            overlay: careerdex-dev
+          - name: careerdex-stage
+            namespace: careerdex-stage
+            branch: stage
+            overlay: careerdex-stage
+          - name: careerdex-prod
+            namespace: careerdex
+            branch: main
+            overlay: careerdex-prod
+
   template:
     metadata:
       name: "{{name}}"
@@ -39,7 +69,7 @@ spec:
       source:
         repoURL: https://github.com/TheDataEngineX/infradex
         targetRevision: "{{branch}}"
-        path: "argocd/overlays/{{environment}}"
+        path: "argocd/overlays/{{overlay}}"
       destination:
         server: https://kubernetes.default.svc
         namespace: "{{namespace}}"
@@ -63,7 +93,7 @@ metadata:
   name: dex-project
   namespace: argocd
 spec:
-  description: DEX - DataEngineX Project
+  description: DEX - DataEngineX Platform
 
   sourceRepos:
     - 'https://github.com/TheDataEngineX/infradex'
@@ -74,6 +104,18 @@ spec:
     - namespace: 'dex-dev'
       server: https://kubernetes.default.svc
     - namespace: 'dex-stage'
+      server: https://kubernetes.default.svc
+    - namespace: 'dex-studio'
+      server: https://kubernetes.default.svc
+    - namespace: 'dex-studio-dev'
+      server: https://kubernetes.default.svc
+    - namespace: 'dex-studio-stage'
+      server: https://kubernetes.default.svc
+    - namespace: 'careerdex'
+      server: https://kubernetes.default.svc
+    - namespace: 'careerdex-dev'
+      server: https://kubernetes.default.svc
+    - namespace: 'careerdex-stage'
       server: https://kubernetes.default.svc
 
   clusterResourceWhitelist:
