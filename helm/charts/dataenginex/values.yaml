@@ -2,8 +2,12 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/thedataenginex/dataenginex
-  tag: latest
+  tag: sha-00000000
   pullPolicy: IfNotPresent
+
+canary:
+  enabled: false
+  weight: 20
 
 service:
   type: ClusterIP

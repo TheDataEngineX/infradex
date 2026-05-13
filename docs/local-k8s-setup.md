@@ -239,13 +239,13 @@ kubectl get events -n dex-dev --sort-by='.lastTimestamp'
 
 ```bash
 # If using ghcr.io, images must be public or you need imagePullSecrets
-# For local testing, build image locally:
-docker build -t thedataenginex/dex:latest .
+# For local testing, build with the same sha- convention:
+SHORT_SHA=$(git rev-parse --short=8 HEAD)
+docker build -t ghcr.io/thedataenginex/dataenginex:sha-${SHORT_SHA} .
 
-# Tag for local registry
-docker tag thedataenginex/dex:latest localhost:5000/dex:latest
-
-# Or use Docker Desktop's built-in registry
+# Update the dev overlay to use your local tag, then push to infradex dev branch
+cd argocd/overlays/dev
+kustomize edit set image ghcr.io/thedataenginex/dataenginex=ghcr.io/thedataenginex/dataenginex:sha-${SHORT_SHA}
 ```
 
 ### Can't access localhost:8080

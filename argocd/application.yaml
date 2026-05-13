@@ -1,9 +1,11 @@
 # ---------------------------------------------------------------
 # ArgoCD ApplicationSet — Branch-based deployment
-# Two long-lived branches map to exactly one environment each:
-#   dev branch  → dex-dev  (development)
-#   main branch → dex      (production)
-# Co-located in same DEX repo (infra/argocd/overlays/)
+# Three long-lived branches map to one environment each:
+#   dev   branch → dex-dev   (development)
+#   stage branch → dex-stage (stage)
+#   main  branch → dex       (production)
+# Overlays live in infradex repo at argocd/overlays/<env>/
+# Image tags are pinned per-overlay and updated by CI/CD workflows
 # ---------------------------------------------------------------
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
@@ -18,7 +20,11 @@ spec:
             namespace: dex-dev
             environment: dev
             branch: dev
-          - name: dex
+          - name: dex-stage
+            namespace: dex-stage
+            environment: stage
+            branch: stage
+          - name: dex-prod
             namespace: dex
             environment: prod
             branch: main
@@ -31,9 +37,9 @@ spec:
     spec:
       project: dex-project
       source:
-        repoURL: https://github.com/TheDataEngineX/dataenginex
+        repoURL: https://github.com/TheDataEngineX/infradex
         targetRevision: "{{branch}}"
-        path: "infra/argocd/overlays/{{environment}}"
+        path: "argocd/overlays/{{environment}}"
       destination:
         server: https://kubernetes.default.svc
         namespace: "{{namespace}}"
@@ -60,12 +66,14 @@ spec:
   description: DEX - DataEngineX Project
 
   sourceRepos:
-    - 'https://github.com/TheDataEngineX/dataenginex'
+    - 'https://github.com/TheDataEngineX/infradex'
 
   destinations:
     - namespace: 'dex'
       server: https://kubernetes.default.svc
     - namespace: 'dex-dev'
+      server: https://kubernetes.default.svc
+    - namespace: 'dex-stage'
       server: https://kubernetes.default.svc
 
   clusterResourceWhitelist:

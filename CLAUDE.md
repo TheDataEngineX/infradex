@@ -42,6 +42,6 @@ infradex rotate-secrets   # Rotate all secrets
 | `terraform/` | Hetzner VPS, DNS, Postgres, Redis, MinIO, Qdrant |
 | `helm/` | Charts for each service |
 | `ansible/` | VPS bootstrap, K3s install, monitoring setup |
-| `argocd/` | GitOps app definitions + overlays (dev/prod) |
+| `argocd/` | GitOps app definitions + overlays (dev/stage/prod) |
 | `monitoring/` | Prometheus, Alertmanager, Grafana dashboards |
-| `scripts/promote.sh` | Promote image tag to prod overlay |
+| `scripts/promote.sh` | Promote image tag to stage/prod overlays |
