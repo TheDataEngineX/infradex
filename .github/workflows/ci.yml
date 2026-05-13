@@ -2,14 +2,14 @@ name: CI
 
 on:
   push:
-    branches: [main, dev]
+    branches: [main, dev, stage]
     paths-ignore:
       - "**.md"
       - "docs/**"
       - "LICENSE"
       - ".github/CODEOWNERS"
   pull_request:
-    branches: [main, dev]
+    branches: [main, dev, stage]
     paths-ignore:
       - "**.md"
       - "docs/**"

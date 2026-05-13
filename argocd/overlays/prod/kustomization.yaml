@@ -1,10 +1,14 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: dex-prod
+namespace: dex
 
 resources:
   - ../../base
+
+images:
+  - name: ghcr.io/thedataenginex/dataenginex
+    newTag: sha-00000000
 
 patches:
   - target:
