@@ -1,10 +1,6 @@
 # ---------------------------------------------------------------
-# ArgoCD ApplicationSet — Branch-based deployment
-# Three long-lived branches map to one environment each:
-#   dev   branch → *-dev   (development)
-#   stage branch → *-stage (staging)
-#   main  branch → *-prod  (production)
-# Each app has its own overlay directory per environment.
+# ArgoCD ApplicationSet — Permanent environments (stage + prod)
+# All overlays live on the infradex `main` branch.
 # Image tags are pinned per-overlay and updated by CI/CD workflows.
 # ---------------------------------------------------------------
 apiVersion: argoproj.io/v1alpha1
@@ -16,46 +12,20 @@ spec:
   generators:
     - list:
         elements:
-          # dex-app — Python API (dataenginex package served as a service)
-          - name: dex-dev
-            namespace: dex-dev
-            branch: dev
-            overlay: dev
-          - name: dex-stage
-            namespace: dex-stage
-            branch: stage
-            overlay: stage
-          - name: dex-prod
-            namespace: dex
-            branch: main
-            overlay: prod
-
           # dex-studio — Reflex UI application
-          - name: dex-studio-dev
-            namespace: dex-studio-dev
-            branch: dev
-            overlay: dex-studio-dev
           - name: dex-studio-stage
             namespace: dex-studio-stage
-            branch: stage
             overlay: dex-studio-stage
           - name: dex-studio-prod
             namespace: dex-studio
-            branch: main
             overlay: dex-studio-prod
 
           # careerdex — AI career intelligence application
-          - name: careerdex-dev
-            namespace: careerdex-dev
-            branch: dev
-            overlay: careerdex-dev
           - name: careerdex-stage
             namespace: careerdex-stage
-            branch: stage
             overlay: careerdex-stage
           - name: careerdex-prod
             namespace: careerdex
-            branch: main
             overlay: careerdex-prod
 
   template:
@@ -68,7 +38,7 @@ spec:
       project: dex-project
       source:
         repoURL: https://github.com/TheDataEngineX/infradex
-        targetRevision: "{{branch}}"
+        targetRevision: main
         path: "argocd/overlays/{{overlay}}"
       destination:
         server: https://kubernetes.default.svc
@@ -87,6 +57,55 @@ spec:
             maxDuration: 3m
 
 ---
+# ---------------------------------------------------------------
+# ArgoCD ApplicationSet — Ephemeral preview environments
+# Discovers argocd/previews/<service>/<branch-slug>/ directories
+# on infradex main. CI creates/deletes these dirs on feature
+# branch push/delete. ArgoCD auto-prunes when dirs are removed.
+# ---------------------------------------------------------------
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: dex-previews
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/TheDataEngineX/infradex
+        revision: main
+        directories:
+          - path: argocd/previews/*/*
+
+  template:
+    metadata:
+      # path[2] = service (e.g. dex-studio), path[3] = branch-slug
+      name: "{{path[2]}}-preview-{{path[3]}}"
+      namespace: argocd
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: dex-project
+      source:
+        repoURL: https://github.com/TheDataEngineX/infradex
+        targetRevision: main
+        path: "{{path}}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{path[2]}}-preview-{{path[3]}}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+        retry:
+          limit: 3
+          backoff:
+            duration: 5s
+            factor: 2
+            maxDuration: 1m
+
+---
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
@@ -99,23 +118,17 @@ spec:
     - 'https://github.com/TheDataEngineX/infradex'
 
   destinations:
-    - namespace: 'dex'
-      server: https://kubernetes.default.svc
-    - namespace: 'dex-dev'
-      server: https://kubernetes.default.svc
-    - namespace: 'dex-stage'
-      server: https://kubernetes.default.svc
     - namespace: 'dex-studio'
-      server: https://kubernetes.default.svc
-    - namespace: 'dex-studio-dev'
       server: https://kubernetes.default.svc
     - namespace: 'dex-studio-stage'
       server: https://kubernetes.default.svc
+    - namespace: 'dex-studio-preview-*'
+      server: https://kubernetes.default.svc
     - namespace: 'careerdex'
       server: https://kubernetes.default.svc
-    - namespace: 'careerdex-dev'
-      server: https://kubernetes.default.svc
     - namespace: 'careerdex-stage'
+      server: https://kubernetes.default.svc
+    - namespace: 'careerdex-preview-*'
       server: https://kubernetes.default.svc
 
   clusterResourceWhitelist:
