@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: careerdex
+  labels:
+    app: careerdex
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: careerdex
+  template:
+    metadata:
+      labels:
+        app: careerdex
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: careerdex
+          image: ghcr.io/thedataenginex/careerdex:sha-00000000
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          ports:
+            - name: backend
+              containerPort: 8788
+              protocol: TCP
+            - name: frontend
+              containerPort: 7861
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 8788
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            timeoutSeconds: 5
+          readinessProbe:
+            tcpSocket:
+              port: 8788
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 3
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
+          envFrom:
+            - configMapRef:
+                name: careerdex-config
+                optional: true
+            - secretRef:
+                name: careerdex-secrets
+                optional: true
