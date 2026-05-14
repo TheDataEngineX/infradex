@@ -25,6 +25,7 @@ spec:
           image: ghcr.io/thedataenginex/careerdex:sha-00000000
           securityContext:
             allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
             capabilities:
               drop:
                 - ALL
@@ -61,3 +62,10 @@ spec:
             - secretRef:
                 name: careerdex-secrets
                 optional: true
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 256Mi

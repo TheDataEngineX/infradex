@@ -25,6 +25,7 @@ spec:
           image: ghcr.io/thedataenginex/dex-studio:sha-00000000
           securityContext:
             allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
             capabilities:
               drop:
                 - ALL
@@ -57,3 +58,10 @@ spec:
             - secretRef:
                 name: dex-studio-secrets
                 optional: true
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 256Mi
