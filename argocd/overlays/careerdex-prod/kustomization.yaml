@@ -4,32 +4,33 @@ kind: Kustomization
 namespace: careerdex
 
 resources:
-  - ../../base-careerdex
+- ../../base-careerdex
 
 images:
-  - name: ghcr.io/thedataenginex/careerdex
-    newTag: sha-00000000
+- name: ghcr.io/thedataenginex/careerdex
+  newName: ghcr.io/thedataenginex/careerdex
+  newTag: sha-fd40d725
 
 patches:
-  - target:
-      kind: Deployment
-      name: careerdex
-    patch: |
-      - op: replace
-        path: /spec/replicas
-        value: 3
-      - op: replace
-        path: /spec/template/spec/containers/0/resources/requests/cpu
-        value: 500m
-      - op: replace
-        path: /spec/template/spec/containers/0/resources/requests/memory
-        value: 1Gi
-      - op: replace
-        path: /spec/template/spec/containers/0/resources/limits/cpu
-        value: "1"
-      - op: replace
-        path: /spec/template/spec/containers/0/resources/limits/memory
-        value: 2Gi
+- patch: |
+    - op: replace
+      path: /spec/replicas
+      value: 3
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/requests/cpu
+      value: 500m
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/requests/memory
+      value: 1Gi
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/limits/cpu
+      value: "1"
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/limits/memory
+      value: 2Gi
+  target:
+    kind: Deployment
+    name: careerdex
 
 commonLabels:
   environment: prod
