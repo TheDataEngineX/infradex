@@ -27,7 +27,7 @@ spec:
           image: ghcr.io/thedataenginex/careerdex:sha-00000000
           securityContext:
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
+            readOnlyRootFilesystem: false
             capabilities:
               drop:
                 - ALL
@@ -66,12 +66,7 @@ spec:
           volumeMounts:
             - name: tmp
               mountPath: /tmp
-            - name: reflex-web-backend
-              mountPath: /workspace/careerdex/.web/backend
       volumes:
         - name: tmp
           emptyDir:
             sizeLimit: 512Mi
-        - name: reflex-web-backend
-          emptyDir:
-            sizeLimit: 64Mi
