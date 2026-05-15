@@ -6,7 +6,7 @@ resources:
 images:
 - name: ghcr.io/thedataenginex/careerdex
   newName: ghcr.io/thedataenginex/careerdex
-  newTag: sha-3bbb3096
+  newTag: sha-fd40d725
 patches:
 - patch: |
     - op: replace
