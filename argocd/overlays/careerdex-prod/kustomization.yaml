@@ -32,5 +32,21 @@ patches:
     kind: Deployment
     name: careerdex
 
+- patch: |
+    - op: add
+      path: /metadata/annotations
+      value:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        traefik.ingress.kubernetes.io/router.tls: "true"
+    - op: add
+      path: /spec/tls
+      value:
+        - hosts:
+            - careerdex.thedataenginex.org
+          secretName: careerdex-tls
+  target:
+    kind: Ingress
+    name: careerdex
+
 commonLabels:
   environment: prod

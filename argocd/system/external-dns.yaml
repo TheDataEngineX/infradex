@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: external-dns
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  project: default
+  source:
+    repoURL: https://kubernetes-sigs.github.io/external-dns/
+    chart: external-dns
+    targetRevision: 1.16.1
+    helm:
+      values: |
+        provider:
+          name: cloudflare    # change to azure / aws-route53 / google as needed
+        env:
+          - name: CF_API_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: cloudflare-api-token
+                key: token
+        txtOwnerId: dex-cluster
+        domainFilters:
+          - thedataenginex.org
+        policy: sync
+        sources:
+          - ingress
+          - service
+        interval: 1m
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: external-dns
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

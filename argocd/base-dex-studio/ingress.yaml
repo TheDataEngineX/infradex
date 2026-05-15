@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dex-studio
+  labels:
+    app: dex-studio
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: dex-studio.thedataenginex.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: dex-studio
+                port:
+                  number: 7860

@@ -31,5 +31,21 @@ patches:
         path: /spec/template/spec/containers/0/resources/limits/memory
         value: 2Gi
 
+  - target:
+      kind: Ingress
+      name: dex-studio
+    patch: |
+      - op: add
+        path: /metadata/annotations
+        value:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+          traefik.ingress.kubernetes.io/router.tls: "true"
+      - op: add
+        path: /spec/tls
+        value:
+          - hosts:
+              - dex-studio.thedataenginex.org
+            secretName: dex-studio-tls
+
 commonLabels:
   environment: prod

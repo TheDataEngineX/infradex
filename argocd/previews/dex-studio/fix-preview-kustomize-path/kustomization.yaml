@@ -27,5 +27,12 @@ patches:
   target:
     kind: Deployment
     name: dex-studio
+- patch: |
+    - op: replace
+      path: /spec/rules/0/host
+      value: fix-preview-kustomize-path.preview.dex-studio.thedataenginex.org
+  target:
+    kind: Ingress
+    name: dex-studio
 commonLabels:
   environment: preview

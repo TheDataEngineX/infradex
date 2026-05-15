@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: careerdex
+  labels:
+    app: careerdex
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: careerdex.thedataenginex.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: careerdex
+                port:
+                  number: 8788

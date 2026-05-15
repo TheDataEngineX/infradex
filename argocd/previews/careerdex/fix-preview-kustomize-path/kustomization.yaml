@@ -27,5 +27,12 @@ patches:
   target:
     kind: Deployment
     name: careerdex
+- patch: |
+    - op: replace
+      path: /spec/rules/0/host
+      value: fix-preview-kustomize-path.preview.careerdex.thedataenginex.org
+  target:
+    kind: Ingress
+    name: careerdex
 commonLabels:
   environment: preview

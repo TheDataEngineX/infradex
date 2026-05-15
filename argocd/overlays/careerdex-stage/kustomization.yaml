@@ -19,6 +19,13 @@ patches:
   target:
     kind: Deployment
     name: careerdex
+- patch: |
+    - op: replace
+      path: /spec/rules/0/host
+      value: stage.careerdex.thedataenginex.org
+  target:
+    kind: Ingress
+    name: careerdex
 
 commonLabels:
   environment: stage
