@@ -23,7 +23,7 @@ patches:
       value: 250m
     - op: replace
       path: /spec/template/spec/containers/0/resources/limits/memory
-      value: 512Mi
+      value: 1Gi
   target:
     kind: Deployment
     name: careerdex
