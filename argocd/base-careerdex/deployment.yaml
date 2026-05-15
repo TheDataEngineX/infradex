@@ -32,11 +32,8 @@ spec:
               drop:
                 - ALL
           ports:
-            - name: backend
+            - name: app
               containerPort: 8788
-              protocol: TCP
-            - name: frontend
-              containerPort: 7861
               protocol: TCP
           livenessProbe:
             tcpSocket:

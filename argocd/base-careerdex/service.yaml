@@ -10,10 +10,6 @@ spec:
     - port: 8788
       targetPort: 8788
       protocol: TCP
-      name: backend
-    - port: 7861
-      targetPort: 7861
-      protocol: TCP
-      name: frontend
+      name: app
   selector:
     app: careerdex
