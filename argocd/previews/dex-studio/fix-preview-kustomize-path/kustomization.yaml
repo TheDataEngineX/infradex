@@ -6,7 +6,7 @@ resources:
 images:
 - name: ghcr.io/thedataenginex/dex-studio
   newName: ghcr.io/thedataenginex/dex-studio
-  newTag: sha-014b5c44
+  newTag: sha-953d68c0
 patches:
 - patch: |
     - op: replace
