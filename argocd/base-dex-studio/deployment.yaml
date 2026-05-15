@@ -37,15 +37,17 @@ spec:
           livenessProbe:
             tcpSocket:
               port: 7860
-            initialDelaySeconds: 30
+            initialDelaySeconds: 180
             periodSeconds: 20
             timeoutSeconds: 5
+            failureThreshold: 3
           readinessProbe:
             tcpSocket:
               port: 7860
-            initialDelaySeconds: 10
+            initialDelaySeconds: 120
             periodSeconds: 10
             timeoutSeconds: 3
+            failureThreshold: 5
           resources:
             requests:
               cpu: 250m
